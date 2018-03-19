@@ -3,17 +3,17 @@ package main
 import (
 	"fmt"
 	"log"
-	"time"
 	"os"
+	"time"
 
 	"github.com/kelseyhightower/envconfig"
 )
 
 type Specification struct {
 	Debug      bool
-	Port       int `default:"8080"`
+	Port       int    `default:"8080"`
 	User       string `default:"Chris"`
-	Host       Host `default:"foo%s"`
+	Host       Host   `default:"foo%s"`
 	Users      []string
 	Rate       float32
 	Timeout    time.Duration
@@ -21,11 +21,12 @@ type Specification struct {
 }
 
 type Host struct {
-	IP	string
+	IP string
 }
 
 func (h *Host) Decode(value string) error {
-	if _, ok := os.LookupEnv("MYAPP_HOST"); ok {
+	if val, ok := os.LookupEnv("MYAPP_HOST"); ok {
+		h.IP = val
 		return nil
 	}
 	h.IP = fmt.Sprintf(value, "bar")
